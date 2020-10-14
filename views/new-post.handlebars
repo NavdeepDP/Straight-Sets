@@ -48,8 +48,10 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        var playerId;
 
+        var feedbackInput = $("#feedback");
+        var titleInput = $("#title");
+        var playerId;
         var url = window.location.href;
 
         const lastItem = url.substring(url.lastIndexOf('/') + 1)
@@ -62,13 +64,48 @@
         function getPlayer() {
             $.get("/api/players/" + playerId, renderPlayer);
         }
-        
 
-        function renderPlayer(data)
-        {
+
+        function renderPlayer(data) {
             console.log(data);
         }
 
+
+        // Function to submit the feedback
+
+        $("#player-feedback-form").on("submit", function (event) {
+            if (!titleInput.val().trim() || !feedbackInput.val().trim()) {
+                return;
+            }
+            // Constructing a new feedback object to hand to the database
+            var newPost = {
+                title: titleInput
+                    .val()
+                    .trim(),
+                body: feedbackInput
+                    .val(),
+                CoachId: 1,
+                PlayerId: playerId
+            };
+
+            submitPost(newPost);
+
+
+
+        });
+
+
+        // Submits a new feedback post and brings user to coach view upon completion
+        function submitPost(post) {
+   
+            $.ajax({
+                url: `/api/posts`,
+                method: "POST",
+                data: post
+            }).then(function () {
+                window.location.replace(`/coach/1`);
+            });
+        }
 
     });
 
