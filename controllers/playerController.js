@@ -68,7 +68,7 @@ router.get("/api/players",(req,res) =>{
 });
 
 router.get("/api/players/:id",(req,res) =>{
-
+   console.log("player id: " + req.params.id);
     db.Player.findOne({
         where:{
             id: req.params.id

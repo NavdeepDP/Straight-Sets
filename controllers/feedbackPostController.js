@@ -5,7 +5,7 @@ const db = require("../models");
 
 // HTML ROUTES
 // =============================================================
-router.get("/post", function (req, res) {
+router.get("/post/:id", function (req, res) {
     console.log("new post");
     res.render("new-post");
   });
