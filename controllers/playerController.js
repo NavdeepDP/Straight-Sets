@@ -6,6 +6,13 @@ const db = require("../models");
 // HTML ROUTES
 // =============================================================
 
+
+router.get("/player/new", function (req, res) {
+    console.log("new player");
+    res.render("new-player");
+  });
+
+
 router.get("/players", (req, res) => {
     // ALL the Things should be displayed
     // DB query
@@ -32,6 +39,7 @@ router.get("/players", (req, res) => {
     });
 
 });
+
 
 
  // api ROUTES

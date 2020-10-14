@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col s12">
       <div class="player-container">
-        <h4>Coach View - Players</h4>
+        <h4 class="header">Players</h4>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -25,10 +25,12 @@
             </tr>
             {{/each}}
 
-         </tbody>
+          </tbody>
         </table>
+
         <p class="center-align">
-        <a class="btn tooltipped btn-floating btn-small waves-effect waves-light red " data-tooltip="Add new player"><i class="material-icons">add</i></a>
+          <a href="/player/new" class="btn tooltipped btn-floating btn-small waves-effect waves-light red" data-tooltip="Add new player"><i
+              class=" material-icons">add</i></a>
         </p>
       </div>
     </div>
@@ -36,8 +38,6 @@
 </div>
 
 <script type="text/javascript">
-
-
 
 
   $(".delete-player").on("click", function (event) {
