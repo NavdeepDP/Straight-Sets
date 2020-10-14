@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col s12">
-            <h4 class="header">New Player form</h4>
+            <h5 class="header">New Player form</h5>
         </div>
     </div>
     <div class="row">
@@ -14,10 +14,15 @@
         <div class="col s12">
             <form id="new-player-form" class="col s12">
                 <div class="input-field">
-                    <input placeholder="" id="player_name" type="text" class="validate">
-                    <label for="player_name">Player Name</label>
+                    <input placeholder="" id="player-name" type="text" class="validate">
+                    <label for="player-name">Player Name</label>
                 </div>
-
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="phone-number" type="text" class="validate">
+                        <label for="phone-number">Phone Number</label>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="input-field col s12">
@@ -33,17 +38,17 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s6">
-                        <input id="ustaId" type="number" class="validate">
-                        <label for="ustaId">USTA Number</label>
+                        <input id="usta-id" type="number" class="validate">
+                        <label for="usta-id">USTA Number</label>
                     </div>
                     <div class="input-field col s6">
-                        <input id="utrRating" type="number" class="validate">
-                        <label for="utrRating">UTR Rating</label>
+                        <input id="utr-rating" type="number" class="validate">
+                        <label for="utr-rating">UTR Rating</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <select>
+                        <select id="level">
                             <option value="" disabled selected>Choose your option</option>
                             <option value="1">Beginner</option>
                             <option value="2">Intermediate</option>
@@ -53,7 +58,7 @@
                     </div>
 
                 </div>
-                <button class="btn waves-effect waves-light btn-small" type="submit" name="action">Submit
+                <button class="btn waves-effect waves-light btn-small"  id="new-player">Submit
                     <i class="material-icons right">send</i>
                 </button>
             </form>
@@ -62,5 +67,30 @@
 </div>
 
 <script type="text/javascript">
+
+$("#new-player-form").on("submit", function (event) {
+        event.preventDefault();
+        const name = $("#player-name").val();
+        const email = $("#email").val();
+        const phone = $("#phone-number").val();
+        const id = $("#usta-id").val();
+        const rating = $("#utr-rating").val();
+        const level =  $("#level").val();
+        
+        $.ajax({
+            url: `/api/player`,
+            method: "POST",
+            data: {
+                fullName: name,
+                email:email,
+                phone: phone,
+                ustaId:id,
+                utrRating:rating,                
+                level: "beginner"
+            }
+        }).then(function () {
+            window.location.replace(`/coach/1`);
+        })
+    })
 
 </script>

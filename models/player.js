@@ -40,6 +40,15 @@ module.exports = function(sequelize, DataTypes ){
 
     });
 
+
+    Player.associate = function(models) {
+        // Associating Coach with Posts
+        // When an Coach is deleted, also delete any associated Posts
+        Player.hasMany(models.FeedbackPost, {
+          onDelete: "cascade"
+        });
+      };
+
     return Player;
 
 };

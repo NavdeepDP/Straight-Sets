@@ -18,6 +18,7 @@ var db = require("./models");
 // controllers
 const coachesController = require("./controllers/coachController");
 const playersController = require("./controllers/playerController");
+const feedbackPostController = require("./controllers/feedbackPOstController");
 
 // Sets up the Express App
 // =============================================================
@@ -48,6 +49,7 @@ app.set("view engine", "handlebars");
 
 app.use(coachesController);
 app.use(playersController);
+app.use(feedbackPostController);
 
 //API routes
 app.get("/api/config", (req, res) => {
