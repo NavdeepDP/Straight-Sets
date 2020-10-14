@@ -5,11 +5,11 @@ module.exports = function(sequelize, DataTypes ){
         fullName: {
               type: DataTypes.STRING,
               allowNull: false,
-              validate: {
-                notNull: {
-                  msg: 'Please enter your name'
-                }
-              }
+            //   validate: {
+            //     notNull: {
+            //       msg: 'Please enter your name'
+            //     }
+            //   }
 
         },
         email:{
@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes ){
             }
         },
         phone:{
-            type:DataTypes.INTEGER
+            type:DataTypes.STRING
         },
         ustaId:{
             type:DataTypes.INTEGER,

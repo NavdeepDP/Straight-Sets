@@ -1,0 +1,63 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col s12">
+      <div class="player-container">
+        <h4>Coach View - Players</h4>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>UTR #</th>
+              <th>See Player's Posts</th>
+              <th>New Post</th>
+              <th>Delete Player</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each players}}
+            <tr>
+              <td>{{fullName}}</td>
+              <td>{{utrRating}}</td>
+              <td><a href="/posts?player_id=" + {{id}}>Go to Posts</a></td>
+              <td><a href="/posts?player_id=" + {{id}}>Create Post</a></td>
+              <td><a style='cursor:pointer;color:red' class='delete-player' data-id={{id}}>Delete Player</a></td>
+            </tr>
+            {{/each}}
+
+         </tbody>
+        </table>
+        <p class="center-align">
+        <a class="btn tooltipped btn-floating btn-small waves-effect waves-light red " data-tooltip="Add new player"><i class="material-icons">add</i></a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+
+
+
+  $(".delete-player").on("click", function (event) {
+    event.preventDefault();
+    const id = $(this).attr("data-id");
+    console.log("deleted player id: " + id);
+    $.ajax({
+      method: "DELETE",
+      url: "/api/player/" + id
+    }).done((response) => {
+
+      console.log(response);
+      if (response.success) {
+        alert(response.message);
+        location.reload();
+      }
+
+    });
+
+  });
+
+
+</script>

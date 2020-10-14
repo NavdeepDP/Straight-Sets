@@ -16,6 +16,23 @@ router.get("/players", (req, res) => {
   });
 
 
+  router.get("/players/:id",(req,res) =>{
+
+    db.Player.findOne({
+        where:{
+            id: req.params.id
+        }
+    })
+    .then((player) =>{
+      console.log(player)
+        res.render("playerView", player.dataValues);
+    })
+    .catch((err) =>{
+
+    });
+
+});
+
 
  // api ROUTES
 // =============================================================
@@ -50,6 +67,7 @@ router.get("/api/players/:id",(req,res) =>{
         }
     })
     .then((player) =>{
+        console.log(player);
         res.json({
             error: false,
             data: player,
@@ -104,10 +122,28 @@ router.post("/api/player", (req, res) => {
       where: {
         id: req.params.id,
       },
-    }).then((result) => {
-      res.end();
-    });
+    }).then((numberOfDestroyedRows) => {
+        console.log(numberOfDestroyedRows);
+        if (numberOfDestroyedRows === 1) {
+          res.json({
+            success: true,
+            message: `Successfully deleted player: ${req.params.id}`,
+          });
+        } else {
+          res.status(500);
+          res.json({
+            success: false,
+            message: `A problem occurred deleting player: ${req.params.id}`,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500);
+        res.json({
+          success: false,
+        });
+      });
   });
-
 
 module.exports = router;

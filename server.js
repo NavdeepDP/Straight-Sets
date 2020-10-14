@@ -8,7 +8,10 @@ var express = require("express");
 
 // Set handlebars
 var exphbs = require("express-handlebars");
-
+const handlebars = require("handlebars");
+const {
+    allowInsecurePrototypeAccess,
+  } = require("@handlebars/allow-prototype-access");
 // import db
 var db = require("./models");
 
@@ -30,8 +33,18 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // set up express-handlebars
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.engine(
+    "handlebars",
+    exphbs({
+      defaultLayout: "main",
+      handlebars: allowInsecurePrototypeAccess(handlebars),
+    })
+  );
 app.set("view engine", "handlebars");
+
+
+
+
 
 app.use(coachesController);
 app.use(playersController);

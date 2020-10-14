@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes ){
             }
         },
         phone:{
-            type:DataTypes.INTEGER
+            type:DataTypes.STRING
         },
         bio:{
             type:DataTypes.TEXT
@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes ){
         certified: {
             type:DataTypes.STRING
         },
-        wordRole: {
+        worKRole: {
             type:DataTypes.STRING
         }
 
