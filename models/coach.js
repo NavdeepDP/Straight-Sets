@@ -42,6 +42,10 @@ module.exports = function(sequelize, DataTypes ){
         Coach.hasMany(models.FeedbackPost, {
           onDelete: "cascade"
         });
+
+        Coach.hasMany(models.LessonRequest, {
+          onDelete: "cascade"
+        });
       };
 
     return Coach;

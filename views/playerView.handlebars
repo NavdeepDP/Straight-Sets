@@ -1,3 +1,52 @@
-<h4 class="header"> Player View</h4>
-<p> Name: {{fullName}}</p>
-<p> Emai: {{email}}</p>
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <h5 class="header"> Player View</h5>
+            <p> Name: {{fullName}}</p>
+            <p> Email: {{email}}</p>
+
+            <h5 class="header">Request a lesson </h5>
+            <form class="col s12">
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="select-date" type="text" class="datepicker">
+                        <label for="select-date">Select date</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="select-time" type="text" class="timepicker">
+                        <label for="select-time">Select Time</label>
+                    </div>
+                </div>
+
+                <button class="btn waves-effect waves-light btn-small" id="request-lesson">Request
+                    <i class="material-icons right">send</i>
+                </button>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <h5 class="header">Pending Requests</h5>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('.datepicker').datepicker();
+        $('.timepicker').timepicker();
+    });
+
+</script>

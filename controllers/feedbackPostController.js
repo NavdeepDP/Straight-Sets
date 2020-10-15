@@ -14,10 +14,11 @@ router.get("/posts/:id", function (req, res) {
     db.FeedbackPost.findAll({
         where: {
             PlayerId: req.params.id
-        }
+        },
+        include: [db.Coach, db.Player]
     })
-        .then((posts) => {
-            res.render("feedBackView", posts);
+        .then((dbPosts) => {
+            res.render("feedBackView", {posts: dbPosts});
 
         })
         .catch((err) => {
@@ -35,7 +36,7 @@ router.get("/posts/:id", function (req, res) {
 // =============================================================
 // POST route for saving a new post
 router.get("/api/posts/:id", function (req, res) {
-    console.log("Getting post " + req.params.id);
+    console.log("Getting post for player: " + req.params.id);
 
     db.FeedbackPost.findAll({
         where: {

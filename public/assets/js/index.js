@@ -3,4 +3,5 @@ $(document).ready(function(){
     $('.sidenav').sidenav();
     $('.tooltipped').tooltip();
     $('select').formSelect();
+    $('.collapsible').collapsible();
   });
