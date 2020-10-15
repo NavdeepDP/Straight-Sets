@@ -32,7 +32,7 @@
 
 
 
-                    <button class="btn waves-effect waves-light btn-small" id="player-feedback">Submit
+                    <button class="btn waves-effect waves-light btn-small" id="player-feedback" data-id={{id}}>Submit
                         <i class="material-icons right">send</i>
                     </button>
 
@@ -47,7 +47,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
+         $(".user-logout").removeClass("hide");
 
         var feedbackInput = $("#feedback");
         var titleInput = $("#title");
@@ -60,7 +60,7 @@
         console.log(playerId);
         getPlayer();
 
-        // A function to get Authors and then render our list of Authors
+        // A function to get players and then render our list of players
         function getPlayer() {
             $.get("/api/players/" + playerId, renderPlayer);
         }
@@ -74,6 +74,9 @@
         // Function to submit the feedback
 
         $("#player-feedback-form").on("submit", function (event) {
+
+            event.preventDefault();
+            
             if (!titleInput.val().trim() || !feedbackInput.val().trim()) {
                 return;
             }
@@ -84,7 +87,7 @@
                     .trim(),
                 body: feedbackInput
                     .val(),
-                CoachId: 1,
+                CoachId: $("#player-feedback").attr("data-id"),
                 PlayerId: playerId
             };
 
@@ -97,13 +100,15 @@
 
         // Submits a new feedback post and brings user to coach view upon completion
         function submitPost(post) {
+
+            var coachId = $("#player-feedback").attr("data-id");
    
             $.ajax({
                 url: `/api/posts`,
                 method: "POST",
                 data: post
             }).then(function () {
-                window.location.replace(`/coach/1`);
+                window.location.replace(`/coach/${coachId}`);
             });
         }
 

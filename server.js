@@ -79,8 +79,8 @@ app.get("/", function (req, res) {
     res.render("index");
 });
 
-db.sequelize.sync().then(function(){
-//db.sequelize.sync({force:true}).then(function(){
+//db.sequelize.sync().then(function(){
+db.sequelize.sync({force:true}).then(function(){
     app.listen(PORT, function () {
         console.log(`Server is running on http://localhost:${PORT}`);
     });

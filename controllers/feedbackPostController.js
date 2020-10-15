@@ -5,15 +5,12 @@ const db = require("../models");
 
 // HTML ROUTES
 // =============================================================
-router.get("/post/:id", function (req, res) {
-    console.log("new post");
-    res.render("new-post");
-});
 
-router.get("/posts/:id", function (req, res) {
+router.get("/posts/:playerId/:coachId", function (req, res) {
     db.FeedbackPost.findAll({
         where: {
-            PlayerId: req.params.id
+            PlayerId: req.params.playerId,
+            CoachId:req.params.coachId
         },
         include: [db.Coach, db.Player]
     })
@@ -31,6 +28,37 @@ router.get("/posts/:id", function (req, res) {
         });
 
 });
+
+router.get("/post/:id", function (req, res) {
+    console.log("new post");
+    res.render("new-post",{id: req.user.roleId});
+});
+
+router.get("/posts/:id", function (req, res) {
+    db.FeedbackPost.findAll({
+        where: {
+            PlayerId: req.params.id,
+            CoachId: req.user.roleId
+        },
+        include: [db.Coach, db.Player]
+    })
+        .then((dbPosts) => {
+            res.render("feedBackView", {posts: dbPosts});
+
+        })
+        .catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: null,
+                message: "Unable to retrieve player feedback posts.",
+            });
+
+        });
+
+});
+
+
+
 
 // api ROUTES
 // =============================================================
@@ -51,6 +79,34 @@ router.get("/api/posts/:id", function (req, res) {
             res.json({
                 error: false,
                 data: posts,
+                message: "Feeback List",
+            });
+
+        })
+        .catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: null,
+                message: "Unable to retrieve player feedback posts.",
+            });
+
+        });
+
+});
+
+
+router.get("/api/posts/:playerId/:coachId", function (req, res) {
+    db.FeedbackPost.findAll({
+        where: {
+            PlayerId: req.params.playerId,
+            CoachId:req.params.coachId
+        },
+        include: [db.Coach, db.Player]
+    })
+        .then((dbPosts) => {
+            res.json({
+                error: false,
+                data: dbPosts,
                 message: "Feeback List",
             });
 

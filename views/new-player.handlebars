@@ -68,14 +68,18 @@
 
 <script type="text/javascript">
 
+$(document).on("click", function(){
+$(".user-logout").removeClass("hide");
+
 $("#new-player-form").on("submit", function (event) {
         event.preventDefault();
         const name = $("#player-name").val();
         const email = $("#email").val();
         const phone = $("#phone-number").val();
-        const id = $("#usta-id").val();
-        const rating = $("#utr-rating").val();
+        const id = parseInt($("#usta-id").val());
+        const rating = parseInt($("#utr-rating").val());
         const level =  $("#level").val();
+        const password = $("#password").val();
         
         $.ajax({
             url: `/api/player`,
@@ -86,11 +90,14 @@ $("#new-player-form").on("submit", function (event) {
                 phone: phone,
                 ustaId:id,
                 utrRating:rating,                
-                level: "beginner"
+                level: "beginner",
+                password: password
             }
         }).then(function () {
             window.location.replace(`/coach/1`);
-        })
-    })
+        });
+    });
+});
+
 
 </script>

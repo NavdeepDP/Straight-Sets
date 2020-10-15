@@ -8,27 +8,20 @@ var passport = require("../config/passport");
 
 
 router.get("/coach/:id", (req, res) => {
-  // ALL the Things should be displayed
-  // DB query
+
   db.Player.findAll().then((dbPlayers) => {
     var data = {
-      players: dbPlayers
+      players: dbPlayers,
+      role: req.user
     };
     res.render("coachView", data);
     console.log(data);
   });
 });
 
+
+//==============================================
 router.get("/coach/requests/:id", (req, res) => {
-  // ALL the Things should be displayed
-  // DB query
-  // db.Player.findAll().then((dbPlayers) => {
-  //     var data = {
-  //         players:dbPlayers
-  //     };
-  //     res.render("coachView",data );
-  //     console.log(data);
-  // });
   res.render("coachRequests", { id: req.params.id });
 });
 
@@ -122,28 +115,28 @@ router.post("/api/coach", (req, res) => {
           });
         });
     });
+});
+
+router.put("/api/coach/:id", (req, res) => {
+  db.Coach.update(req.body, {
+    where: {
+      id: req.params.id,
+    },
+  }).then((updatedObject) => {
+    console.log(updatedObject);
+    res.end();
   });
+});
 
-  router.put("/api/coach/:id", (req, res) => {
-    db.Coach.update(req.body, {
-      where: {
-        id: req.params.id,
-      },
-    }).then((updatedObject) => {
-      console.log(updatedObject);
-      res.end();
-    });
+router.delete("/api/coach/:id", (req, res) => {
+  db.Coach.destroy({
+    where: {
+      id: req.params.id,
+    },
+  }).then((result) => {
+    res.end();
   });
-
-  router.delete("/api/coach/:id", (req, res) => {
-    db.Coach.destroy({
-      where: {
-        id: req.params.id,
-      },
-    }).then((result) => {
-      res.end();
-    });
-  });
+});
 
 
-  module.exports = router;
+module.exports = router;

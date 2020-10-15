@@ -19,6 +19,7 @@
 
   <nav class="app-nav">
     <div class="nav-wrapper ">
+      
       <a href="#" class="brand-logo">StraightSets</a>
       <a href="#" class="sidenav-trigger" data-target="slide-out"><i class="material-icons">menu</i>></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -26,6 +27,7 @@
         <li><a href="#">Services</a></li>
         <li><a href="#">About us</a></li>
         <li><a href="#">Contact us</a></li>
+        <li  class="user-logout hide"><a href="/">Logout</a></li>
       </ul>
     </div>
   </nav>
@@ -35,9 +37,11 @@
     <li><a href="#"><i class="material-icons">public</i>Services</a></li>
     <li><a href="#"><i class="material-icons">group</i>About us</a></li>
     <li><a href="#"><i class="material-icons">email</i>Contact us</a></li>
+    <li   class="user-logout hide"><a href="/" >Logout</a></li>
   </ul>
 
-
+    {{!-- $("#nav-mobile").append(`<li  class="coach-logout hide"><a href="/">Logout</a></li>`);
+    $("#slide-out").append(`<li   class="coach-logout hide"><a href="/" >Logout</a></li>`); --}}
 
 
 
