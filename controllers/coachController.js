@@ -17,6 +17,19 @@ router.get("/coach/:id", (req, res) => {
     });
   });
 
+  router.get("/coach/requests/:id", (req, res) => {
+    // ALL the Things should be displayed
+    // DB query
+    // db.Player.findAll().then((dbPlayers) => {
+    //     var data = {
+    //         players:dbPlayers
+    //     };
+    //     res.render("coachView",data );
+    //     console.log(data);
+    // });
+    res.render("coachRequests", {id:req.params.id});
+  });
+
 
  // api ROUTES
 // =============================================================

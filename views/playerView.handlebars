@@ -6,7 +6,8 @@
             <p> Email: {{email}}</p>
 
             <h5 class="header">Request a lesson </h5>
-            <form class="col s12">
+            <form class="col s12" id="request-lesson-form">
+                <div id="player-id" data-id="{{id}}" class="hide"></div>
 
                 <div class="row">
                     <div class="input-field col s12">
@@ -36,17 +37,89 @@
     <div class="row">
         <div class="col s12">
             <h5 class="header">Pending Requests</h5>
+            <ul id="pending-requests">
+
+            </ul>
+            <h5 class="header">Confirmed Lessons</h5>
+            <ul id="confirmed-requests">
+
+            </ul>
+            <h5 class="header">Cancellations</h5>
+            <ul id="lesson-canceled">
+
+            </ul>
 
         </div>
     </div>
 
 </div>
 
-<script>
+<script type="text/javascript">
 
     $(document).ready(function () {
         $('.datepicker').datepicker();
         $('.timepicker').timepicker();
+
+        var pendingList = $("#pending-requests");
+        var confirmedList = $("#confirmed-requests");
+        var cancelList = $("#lesson-canceled");
+
+        getLessons();
+
+        function getLessons() {
+            const playerId = $("#player-id").attr("data-id");
+            $.ajax({
+                url: "/api/requests/" + playerId,
+                method: "GET"
+
+            }).then(function (requests) {
+                renderRequests(requests);
+            });
+        }
+
+
+        function renderRequests(requests) {
+            for (var i = 0; i < requests.data.length; i++) {
+
+                var listItem = $("<li>");
+
+                listItem.text("Lesson on " + requests.data[i].date + " at " + requests.data[i].time + " with coach " + requests.data[i].Coach.fullName);
+
+                if (requests.data[i].status === "pending")
+                    pendingList.append(listItem);
+                else if (requests.data[i].status === "confirmed")
+                    confirmedList.append(listItem);
+                else if (requests.data[i].status === "cancelled")
+                    cancelList.append(listItem);
+
+            }
+        }
+
+
+        $("#request-lesson-form").on("submit", function (event) {
+            event.preventDefault();
+            const inputDate = $("#select-date").val();
+            const inputTime = $("#select-time").val();
+            const defaultStatus = "pending";
+            const coachId = 1;
+            const playerId = $("#player-id").attr("data-id");
+
+
+            $.ajax({
+                url: `/api/request`,
+                method: "POST",
+                data: {
+                    date: inputDate,
+                    time: inputTime,
+                    status: defaultStatus,
+                    PlayerId: playerId,
+                    CoachId: "1"
+
+                }
+            }).then(function () {
+                window.location.replace("/players/" + playerId);
+            });
+        });
     });
 
 </script>
