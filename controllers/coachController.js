@@ -1,108 +1,129 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models");
+var passport = require("../config/passport");
 
 // HTML ROUTES
 // =============================================================
 
+
 router.get("/coach/:id", (req, res) => {
-    // ALL the Things should be displayed
-    // DB query
-    db.Player.findAll().then((dbPlayers) => {
-        var data = {
-            players:dbPlayers
-        };
-        res.render("coachView",data );
-        console.log(data);
-    });
+  // ALL the Things should be displayed
+  // DB query
+  db.Player.findAll().then((dbPlayers) => {
+    var data = {
+      players: dbPlayers
+    };
+    res.render("coachView", data);
+    console.log(data);
   });
+});
 
-  router.get("/coach/requests/:id", (req, res) => {
-    // ALL the Things should be displayed
-    // DB query
-    // db.Player.findAll().then((dbPlayers) => {
-    //     var data = {
-    //         players:dbPlayers
-    //     };
-    //     res.render("coachView",data );
-    //     console.log(data);
-    // });
-    res.render("coachRequests", {id:req.params.id});
-  });
+router.get("/coach/requests/:id", (req, res) => {
+  // ALL the Things should be displayed
+  // DB query
+  // db.Player.findAll().then((dbPlayers) => {
+  //     var data = {
+  //         players:dbPlayers
+  //     };
+  //     res.render("coachView",data );
+  //     console.log(data);
+  // });
+  res.render("coachRequests", { id: req.params.id });
+});
 
 
- // api ROUTES
+// api ROUTES
 // =============================================================
 
-router.get("/api/coaches",(req,res) =>{
 
-    db.Coach.findAll()
-    .then((coaches) =>{
-        res.json({
-            error: false,
-            data: coaches,
-            message: "coaches List",
-          });
+router.get("/api/coaches", (req, res) => {
+
+  db.Coach.findAll()
+    .then((coaches) => {
+      res.json({
+        error: false,
+        data: coaches,
+        message: "coaches List",
+      });
 
     })
-    .catch((err) =>{
-        res.status(500).json({
-            error: true,
-            data: null,
-            message: "Unable to retrieve coaches.",
-          });
+    .catch((err) => {
+      res.status(500).json({
+        error: true,
+        data: null,
+        message: "Unable to retrieve coaches.",
+      });
 
     });
 
 });
 
-router.get("/api/coaches/:id",(req,res) =>{
+router.get("/api/coaches/:id", (req, res) => {
 
-    db.Coach.findOne({
-        where:{
-            id: req.params.id
-        }
-    })
-    .then((player) =>{
-        console.log(coach);
-        res.json({
-            error: false,
-            data: coach,
-            message: "Coach Detail",
-          });
+  db.Coach.findOne({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then((coach) => {
+      console.log(coach);
+      res.json({
+        error: false,
+        data: coach,
+        message: "Coach Detail",
+      });
 
     })
-    .catch((err) =>{
-        res.status(500).json({
-            error: true,
-            data: null,
-            message: "Unable to retrieve coaches.",
-          });
+    .catch((err) => {
+      res.status(500).json({
+        error: true,
+        data: null,
+        message: "Unable to retrieve coaches.",
+      });
 
     });
 
 });
 
 router.post("/api/coach", (req, res) => {
-    console.log(req.body);
-    db.Coach.create(req.body)
-      .then((newCoach) => {
+  console.log(req.body);
+  db.Coach.create(req.body)
+    .then((newCoach) => {
+
+      var dbUser = {
+        email: newCoach.email,
+        password: newCoach.password,
+        role: "coach",
+        roleId: newCoach.id
+      };
+
+      db.User.create(dbUser).then((user) => {
         res.json({
           error: false,
           data: newCoach,
-          message: "Successfully created new coach.",
+          message: "Successfully created new coach and user entry.",
         });
-      })
-      .catch((err) => {
-        console.log(err);
+
+
+      }).catch((err) => {
         res.status(500).json({
           error: true,
           data: null,
-          message: "Unable to create new coach.",
+          message: "Unable to create user entry and new coach.",
         });
-      });
+      })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({
+            error: true,
+            data: null,
+            message: "Unable to create new coach.",
+          });
+        });
+    });
   });
-  
+
   router.put("/api/coach/:id", (req, res) => {
     db.Coach.update(req.body, {
       where: {
@@ -113,7 +134,7 @@ router.post("/api/coach", (req, res) => {
       res.end();
     });
   });
-  
+
   router.delete("/api/coach/:id", (req, res) => {
     db.Coach.destroy({
       where: {
@@ -125,4 +146,4 @@ router.post("/api/coach", (req, res) => {
   });
 
 
-module.exports = router;
+  module.exports = router;

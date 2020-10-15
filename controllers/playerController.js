@@ -4,39 +4,39 @@ const db = require("../models");
 var passport = require("../config/passport");
 
 
-// HTML ROUTES
-// =============================================================
+// // HTML ROUTES
+// // =============================================================
 
 
 
 router.get("/player/new", function (req, res) {
-    console.log("new player");
-    res.render("new-player");
-  });
+  console.log("new player");
+  res.render("new-player");
+});
 
 
 router.get("/players", (req, res) => {
-    // ALL the Things should be displayed
-    // DB query
-    db.Player.findAll().then((players) => {
-        console.log(players);
-      //res.render("all-players", { players: allThings });
-    });
+  // ALL the Things should be displayed
+  // DB query
+  db.Player.findAll().then((players) => {
+    console.log(players);
+    //res.render("all-players", { players: allThings });
   });
+});
 
 
-  router.get("/players/:id",(req,res) =>{
+router.get("/players/:id", (req, res) => {
 
-    db.Player.findOne({
-        where:{
-            id: req.params.id
-        }
-    })
-    .then((player) =>{
+  db.Player.findOne({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then((player) => {
       console.log(player)
-        res.render("playerView", player.dataValues);
+      res.render("playerView", player.dataValues);
     })
-    .catch((err) =>{
+    .catch((err) => {
 
     });
 
@@ -44,84 +44,105 @@ router.get("/players", (req, res) => {
 
 
 
- // api ROUTES
-// =============================================================
+// // api ROUTES
+// // =============================================================
 
 
-router.post("/api/player/login", passport.authenticate("local"), function(req, res) {
+router.post("/api/login", passport.authenticate("local"), function (req, res) {
   console.log(req.user);
   res.json(req.user);
 });
 
-router.get("/api/players",(req,res) =>{
+router.get("/api/players", (req, res) => {
 
-    db.Player.findAll()
-    .then((players) =>{
-        res.json({
-            error: false,
-            data: players,
-            message: "Players List",
-          });
+  db.Player.findAll()
+    .then((players) => {
+      res.json({
+        error: false,
+        data: players,
+        message: "Players List",
+      });
 
     })
-    .catch((err) =>{
-        res.status(500).json({
-            error: true,
-            data: null,
-            message: "Unable to retrieve players.",
-          });
+    .catch((err) => {
+      res.status(500).json({
+        error: true,
+        data: null,
+        message: "Unable to retrieve players.",
+      });
 
     });
 
 });
 
-router.get("/api/players/:id",(req,res) =>{
-   console.log("player id: " + req.params.id);
-    db.Player.findOne({
-        where:{
-            id: req.params.id
-        }
-    })
-    .then((player) =>{
-        console.log(player);
-        res.json({
-            error: false,
-            data: player,
-            message: "Player Detail",
-          });
+router.get("/api/players/:id", (req, res) => {
+  console.log("player id: " + req.params.id);
+  db.Player.findOne({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then((player) => {
+      console.log(player);
+      res.json({
+        error: false,
+        data: player,
+        message: "Player Detail",
+      });
 
     })
-    .catch((err) =>{
-        res.status(500).json({
-            error: true,
-            data: null,
-            message: "Unable to retrieve players.",
-          });
+    .catch((err) => {
+      res.status(500).json({
+        error: true,
+        data: null,
+        message: "Unable to retrieve players.",
+      });
 
     });
 
 });
 
 router.post("/api/player", (req, res) => {
-    console.log(req.body);
-    db.Player.create(req.body)
-      .then((newPlayer) => {
+  console.log(req.body);
+
+  db.Player.create(req.body)
+    .then((newPlayer) => {
+
+      var dbUser = {
+        email: newPlayer.email,
+        password: newPlayer.password,
+        role: "player",
+        roleId: newPlayer.id
+      };
+
+      db.User.create(dbUser).then((user) => {
         res.json({
           error: false,
           data: newPlayer,
-          message: "Successfully created new Player.",
+          message: "Successfully created user entry Player.",
         });
-      })
-      .catch((err) => {
-        console.log(err);
+
+
+      }).catch((err) => {
         res.status(500).json({
           error: true,
           data: null,
-          message: "Unable to create new player.",
+          message: "Unable to create user entry and new player.",
         });
-      });
+
+
+      })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({
+            error: true,
+            data: null,
+            message: "Unable to create new player.",
+          });
+        });
+    });
   });
-  
+
   router.put("/api/player/:id", (req, res) => {
     db.Player.update(req.body, {
       where: {
@@ -132,27 +153,27 @@ router.post("/api/player", (req, res) => {
       res.end();
     });
   });
-  
+
   router.delete("/api/Player/:id", (req, res) => {
     db.Player.destroy({
       where: {
         id: req.params.id,
       },
     }).then((numberOfDestroyedRows) => {
-        console.log(numberOfDestroyedRows);
-        if (numberOfDestroyedRows === 1) {
-          res.json({
-            success: true,
-            message: `Successfully deleted player: ${req.params.id}`,
-          });
-        } else {
-          res.status(500);
-          res.json({
-            success: false,
-            message: `A problem occurred deleting player: ${req.params.id}`,
-          });
-        }
-      })
+      console.log(numberOfDestroyedRows);
+      if (numberOfDestroyedRows === 1) {
+        res.json({
+          success: true,
+          message: `Successfully deleted player: ${req.params.id}`,
+        });
+      } else {
+        res.status(500);
+        res.json({
+          success: false,
+          message: `A problem occurred deleting player: ${req.params.id}`,
+        });
+      }
+    })
       .catch((err) => {
         console.log(err);
         res.status(500);
@@ -162,4 +183,4 @@ router.post("/api/player", (req, res) => {
       });
   });
 
-module.exports = router;
+  module.exports = router;
