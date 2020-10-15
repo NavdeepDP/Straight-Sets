@@ -1,0 +1,108 @@
+<!-- Form Section -->
+<div class="container">
+    <div class="row" style="padding-top:30px">
+        <div class="col s12">
+
+            <form class="login">
+                <!-- Change The Form Method From Here-->
+                <div class="card-panel z-depth-5">
+
+                    <!-- Form Logo Section  -->
+
+                    <div class="row margin">
+                        <div class="col s12 m12 l12 center">
+                            <img src="/assets/images/logo.png" alt="" class="responsive-img circle"
+                                style="width:100px;">
+                            <p>Login Page</p>
+                        </div>
+                    </div>
+
+                    <!-- Form Username Input Section -->
+
+                    <div class="col s12 m12 l12">
+                        <div class="input-field">
+                            <i class="material-icons prefix">person</i>
+                            <input type="text" name="username" id="email-input">
+                            <label for="email-input">Username</label>
+                        </div>
+                    </div>
+
+                    <!-- Form Password Input Section -->
+
+                    <div class="col m12 l12">
+                        <div class="input-field">
+                            <i class="material-icons prefix">lock</i>
+                            <input type="password" name="password" id="password-input">
+                            <label for="password-input">Password</label>
+                        </div>
+                    </div>
+
+                    <br><br>
+
+                    <!-- Form Button Section  -->
+
+                    <div class="center">
+                        <input type="submit" value="Login" name="login" class="btn waves-effect waves-light "
+                            style="width:100%;">
+                    </div>
+
+                    <!-- Form "Register Now" And "Forgot Password" Link Section. -->
+
+                    <div class="" style="font-size:14px;"><br>
+                        <a href="" class="left">Register Now!</a>
+
+                    </div><br>
+                </div>
+            </form>
+
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+        // Getting references to our form and inputs
+        var loginForm = $("form.login");
+        var emailInput = $("input#email-input");
+        var passwordInput = $("input#password-input");
+
+        // When the form is submitted, we validate there's an email and password entered
+        loginForm.on("submit", function (event) {
+            event.preventDefault();
+            var userData = {
+                email: emailInput.val().trim(),
+                password: passwordInput.val().trim()
+            };
+
+            if (!userData.email || !userData.password) {
+                return;
+            }
+
+            // If we have an email and password we run the loginUser function and clear the form
+            loginUser(userData.email, userData.password);
+            emailInput.val("");
+            passwordInput.val("");
+        });
+
+        // loginUser does a post to our "api/login" route and if successful, redirects us the the members page
+        function loginUser(email, password) {
+            $.post("/api/player/login", {
+                email: email,
+                password: password
+            })
+                .then(function (player) {
+                    window.location.replace("/players/" + player.id);
+                    // If there's an error, log the error
+
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
+        }
+    });
+</script>

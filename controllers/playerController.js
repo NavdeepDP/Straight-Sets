@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models");
+var passport = require("../config/passport");
 
 
 // HTML ROUTES
 // =============================================================
+
 
 
 router.get("/player/new", function (req, res) {
@@ -44,6 +46,12 @@ router.get("/players", (req, res) => {
 
  // api ROUTES
 // =============================================================
+
+
+router.post("/api/player/login", passport.authenticate("local"), function(req, res) {
+  console.log(req.user);
+  res.json(req.user);
+});
 
 router.get("/api/players",(req,res) =>{
 

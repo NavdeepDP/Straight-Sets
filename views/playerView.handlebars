@@ -60,6 +60,12 @@
         $('.datepicker').datepicker();
         $('.timepicker').timepicker();
 
+        $("#nav-mobile").empty();
+        $("#slide-out").empty();
+        $("#nav-mobile").append(`<li><a href="/">Logout</a></li>`);
+        $("#slide-out").append(`<li><a href="/">Logout</a></li>`);
+
+
         var pendingList = $("#pending-requests");
         var confirmedList = $("#confirmed-requests");
         var cancelList = $("#lesson-canceled");
@@ -118,6 +124,7 @@
                 }
             }).then(function () {
                 window.location.replace("/players/" + playerId);
+
             });
         });
     });
