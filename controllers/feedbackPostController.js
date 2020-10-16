@@ -5,6 +5,30 @@ const db = require("../models");
 
 // HTML ROUTES
 // =============================================================
+// get all the posts associated with player
+router.get("/posts/player/:id", function (req, res) {
+    console.log("Display posts for player with is: " +  req.params.id);
+    db.FeedbackPost.findAll({
+        where: {
+            PlayerId: req.params.id,            
+        },
+        include: [db.Coach, db.Player]
+    })
+        .then((dbPosts) => {
+            console.log(dbPosts);
+            res.render("playerFeedback", {posts: dbPosts});
+
+        })
+        .catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: null,
+                message: "Unable to retrieve player feedback posts.",
+            });
+
+        });
+
+});
 
 router.get("/posts/:playerId/:coachId", function (req, res) {
     db.FeedbackPost.findAll({
@@ -34,6 +58,8 @@ router.get("/post/:id", function (req, res) {
     res.render("new-post",{id: req.user.roleId});
 });
 
+
+// get player posts with  associate coach logged-in
 router.get("/posts/:id", function (req, res) {
     db.FeedbackPost.findAll({
         where: {
@@ -60,9 +86,11 @@ router.get("/posts/:id", function (req, res) {
 
 
 
+
+
 // api ROUTES
 // =============================================================
-// POST route for saving a new post
+
 router.get("/api/posts/:id", function (req, res) {
     console.log("Getting post for player: " + req.params.id);
 

@@ -29,6 +29,8 @@
         <li><a href="#">Contact us</a></li> --}}
         <li class="bold coach hide"><a class="our-players">Our Players</a></li>
         <li class="bold coach hide"><a class="my-lessons">My Lessons</a></li>
+        <li class="bold player hide"><a class="my-feedback">Coach Feedback</a></li>
+        <li class="bold player hide"><a class="my-lessons">My lessons</a></li>
         <li class="user-logout hide"><a href="/logout">Logout</a></li>
       </ul>
     </div>
@@ -41,6 +43,8 @@
     <li><a href="#"><i class="material-icons">email</i>Contact us</a></li> --}}
     <li class="bold coach hide"><a class="our-players">Our Players</a></li>
     <li class=" bold coach hide"><a class="my-lessons">My Lessons</a></li>
+    <li class="bold player hide"><a class="my-feedback">Coach Feedback</a></li>
+    <li class="bold player hide"><a class="my-lessons">My lessons</a></li>
     <li class="bold user-logout hide"><a href="/logout">Logout</a></li>
   </ul>
 
@@ -71,9 +75,16 @@
 
         }
         else if (data.role === "player") {
-          $(".user-logout").removeClass("hide");
+          var feedbackUrl = "/posts/player/" + data.roleId;
+          var lessonsUrl = "/players/" + data.roleId;
+          $(".user-logout").removeClass("hide");          
           $(".user-logout").attr("data-id", data.roleId);
+
+          $(".player").removeClass("hide");
           $(".coach").addClass("hide");
+          
+          $(".my-feedback").attr("href", feedbackUrl);
+          $(".my-lessons").attr("href", lessonsUrl);
         }
 
       });
