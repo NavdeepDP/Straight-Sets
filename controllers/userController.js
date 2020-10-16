@@ -48,7 +48,9 @@ router.get("/api/user_data", function (req, res) {
         // Sending back a password, even a hashed password, isn't a good idea
         res.json({
             email: req.user.email,
-            id: req.user.id
+            id: req.user.id,
+            role: req.user.role,
+            roleId: req.user.roleId
         });
     }
 });

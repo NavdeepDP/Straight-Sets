@@ -9,6 +9,17 @@
             <form class="col s12" id="request-lesson-form">
                 <div id="player-id" data-id="{{id}}" class="hide"></div>
 
+
+                <div class="row">
+                    <div class="col s12">
+                        <label>Select Coach</label>
+                        <select id="coach-select" class="browser-default">
+                            <option value="" disabled selected>Choose your coach</option>
+                        </select>
+
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="select-date" type="text" class="datepicker">
@@ -57,22 +68,22 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+
         $('.datepicker').datepicker();
         $('.timepicker').timepicker();
 
-        $("#nav-mobile").empty();
-        $("#slide-out").empty();
-        $("#slide-out").append(`<li class="logo" style="background-color: white;"> <img src="/assets/images/logo.png"/></li>`);
-        $("#nav-mobile").append(`<li><a href="/logout">Logout</a></li>`);
-        $("#slide-out").append(`<li><a href="/logout">Logout</a></li>`);
-
+        $('select').formSelect();
+        $('select').not('.disabled').formSelect();
+        $(".coach").addClass("hide");
 
         var pendingList = $("#pending-requests");
         var confirmedList = $("#confirmed-requests");
         var cancelList = $("#lesson-canceled");
+        var coachSelect = $("#coach-select");
 
+        getCoaches();
         getLessons();
-
+        //===========================================================================
         function getLessons() {
             const playerId = $("#player-id").attr("data-id");
             $.ajax({
@@ -101,16 +112,45 @@
 
             }
         }
+        // GET AND RENDER COACHES
+        //======================================================================================
+        // A function to get Authors and then render our list of Authors
+        function getCoaches() {
+            $.get("/api/coaches", renderCoachList);
+        }
+        // Function to either render a list of coaches, or if there are none, direct the user to the page
+        // to create an author first
+        function renderCoachList(res) {
 
+            var rowsToAdd = [];
+            for (var i = 0; i < res.data.length; i++) {
+                coachSelect.append(createCoachRow(res.data[i]));
+            }
+            //coachSelect.empty();
+
+            $("#select-coach").trigger('contentChanged');
+            console.log(coachSelect);
+
+        }
+
+        // Creates the author options in the dropdown
+        function createCoachRow(coach) {
+            var listOption = $("<option>");
+            listOption.attr("value", coach.id);
+            listOption.text(coach.fullName);
+            return listOption;
+        }
+
+        // EVENT HANDLERS
+        //======================================================================================
 
         $("#request-lesson-form").on("submit", function (event) {
             event.preventDefault();
             const inputDate = $("#select-date").val();
             const inputTime = $("#select-time").val();
             const defaultStatus = "pending";
-            const coachId = 1;
+            const coachId = parseInt($("#coach-select").val());
             const playerId = $("#player-id").attr("data-id");
-
 
             $.ajax({
                 url: `/api/request`,
@@ -120,7 +160,7 @@
                     time: inputTime,
                     status: defaultStatus,
                     PlayerId: playerId,
-                    CoachId: "1"
+                    CoachId: coachId
 
                 }
             }).then(function () {

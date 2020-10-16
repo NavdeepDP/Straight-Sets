@@ -2,12 +2,14 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models");
 var passport = require("../config/passport");
+// Requiring our custom middleware for checking if a user is logged in
+var isAuthenticated = require("../config/middleware/isAuthenticated");
 
 // HTML ROUTES
 // =============================================================
 
 
-router.get("/coach/:id", (req, res) => {
+router.get("/coach/:id",isAuthenticated, (req, res) => {
 
   db.Player.findAll().then((dbPlayers) => {
     var data = {

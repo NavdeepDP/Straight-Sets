@@ -19,7 +19,7 @@
             <tr>
               <td>{{fullName}}</td>
               <td>{{utrRating}}</td>
-              <td><a href="/posts/{{id}}">Go to Posts</a></td>              
+              <td><a href="/posts/{{id}}">Go to Posts</a></td>
               <td><a href="/post/{{id}}">Create Post</a></td>
               <td><a style='cursor:pointer;color:red' class='delete-player' data-id={{id}}>Delete Player</a></td>
             </tr>
@@ -41,49 +41,56 @@
 
   $(document).ready(function () {
 
-   // get the coach id - currently logged-in
+    // get the coach id - currently logged-in
     var url = window.location.href;
     const lastItem = url.substring(url.lastIndexOf('/') + 1)
+    
+    // get the user logged in 
+    getUserLoggedIn();
 
-    $(".user-logout").removeClass("hide");
-    $(".user-logout").attr("data-id", lastItem);
-  
+    function getUserLoggedIn() {
+      $.get("/api/user_data").then(function (data) {
+        var userId = data.roleId;
+      });   
+    }
+
+
 
   // Event handler to delete player
   //========================================================
-    $(".delete-player").on("click", function (event) {
-      event.preventDefault();
-      const id = $(this).attr("data-id");
-      console.log("deleted player id: " + id);
-      $.ajax({
-        method: "DELETE",
-        url: "/api/player/" + id
-      }).done((response) => {
+  $(".delete-player").on("click", function (event) {
+    event.preventDefault();
+    const id = $(this).attr("data-id");
+    console.log("deleted player id: " + id);
+    $.ajax({
+      method: "DELETE",
+      url: "/api/player/" + id
+    }).done((response) => {
 
-        console.log(response);
-        if (response.success) {
-          alert(response.message);
-          location.reload();
-        }
-
-      });
+      console.log(response);
+      if (response.success) {
+        alert(response.message);
+        location.reload();
+      }
 
     });
 
-    // Event handler to get posts specific to player and coach
-    //=====================================================
-    $("#goto-posts").on("click", function(event){
-          const id = $(this).attr("data-id");
-             $.ajax({
-                url: `/api/posts/${id}/${lastItem}`,
-                method: "GET",
-                
-            }).then(function () {
-                
-            });
+  });
 
+  // Event handler to get posts specific to player and coach
+  //=====================================================
+  $("#goto-posts").on("click", function (event) {
+    const id = $(this).attr("data-id");
+    $.ajax({
+      url: `/api/posts/${id}/${lastItem}`,
+      method: "GET",
+
+    }).then(function () {
 
     });
+
+
+  });
 
 
 

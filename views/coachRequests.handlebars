@@ -23,6 +23,18 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
+
+        function getUserLoggedIn(){
+            $.get("/api/user_data").then(function (data) {
+
+                if (data.role === "coach") {
+                    return data.roleID;
+                }
+            }).catch((err)=>{
+                return null;
+            });
+        }
+
         var pendingList = $("#pending-requests");
         getLessonsInfo();
 
@@ -70,6 +82,7 @@
         //$("#confirm-lesson").on("click", function (event) {
         $(document).on("click", "#confirm-lesson", function () {
             event.preventDefault();
+            const coachId = pendingList.attr("data-id");
             var requestId = $(this).attr("data-id");
             var request = {
                 status: "confirmed"
@@ -80,14 +93,15 @@
                 data: request
             })
                 .then(function () {
-                    window.location.href = "/coach/requests/1";
+                    window.location.href = "/coach/requests/" + coachId;
                 });
 
         });
 
-                //$("#confirm-lesson").on("click", function (event) {
+        //$("#confirm-lesson").on("click", function (event) {
         $(document).on("click", "#reject-lesson", function () {
             event.preventDefault();
+            const coachId = pendingList.attr("data-id");
             var requestId = $(this).attr("data-id");
             var request = {
                 status: "cancelled"
@@ -98,7 +112,7 @@
                 data: request
             })
                 .then(function () {
-                    window.location.href = "/coach/requests/1";
+                    window.location.href = "/coach/requests/" + coachId;
                 });
 
         });

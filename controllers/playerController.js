@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models");
 var passport = require("../config/passport");
+// Requiring our custom middleware for checking if a user is logged in
+var isAuthenticated = require("../config/middleware/isAuthenticated");
 
 
 // // HTML ROUTES
@@ -25,7 +27,7 @@ router.get("/players", (req, res) => {
 });
 
 
-router.get("/players/:id", (req, res) => {
+router.get("/players/:id", isAuthenticated, (req, res) => {
 
   db.Player.findOne({
     where: {
@@ -48,10 +50,10 @@ router.get("/players/:id", (req, res) => {
 // // =============================================================
 
 
-router.post("/api/login", passport.authenticate("local"), function (req, res) {
-  console.log(req.user);
-  res.json(req.user);
-});
+// router.post("/api/login", passport.authenticate("local"), function (req, res) {
+//   console.log(req.user);
+//   res.json(req.user);
+// });
 
 router.get("/api/players", (req, res) => {
 
@@ -121,8 +123,6 @@ router.post("/api/player", (req, res) => {
           data: newPlayer,
           message: "Successfully created user entry Player.",
         });
-
-
       }).catch((err) => {
         res.status(500).json({
           error: true,
@@ -132,55 +132,56 @@ router.post("/api/player", (req, res) => {
 
 
       })
-        .catch((err) => {
-          console.log(err);
-          res.status(500).json({
-            error: true,
-            data: null,
-            message: "Unable to create new player.",
-          });
-        });
-    });
-  });
-
-  router.put("/api/player/:id", (req, res) => {
-    db.Player.update(req.body, {
-      where: {
-        id: req.params.id,
-      },
-    }).then((updatedObject) => {
-      console.log(updatedObject);
-      res.end();
-    });
-  });
-
-  router.delete("/api/Player/:id", (req, res) => {
-    db.Player.destroy({
-      where: {
-        id: req.params.id,
-      },
-    }).then((numberOfDestroyedRows) => {
-      console.log(numberOfDestroyedRows);
-      if (numberOfDestroyedRows === 1) {
-        res.json({
-          success: true,
-          message: `Successfully deleted player: ${req.params.id}`,
-        });
-      } else {
-        res.status(500);
-        res.json({
-          success: false,
-          message: `A problem occurred deleting player: ${req.params.id}`,
-        });
-      }
     })
-      .catch((err) => {
-        console.log(err);
-        res.status(500);
-        res.json({
-          success: false,
-        });
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        error: true,
+        data: null,
+        message: "Unable to create new player.",
       });
-  });
+    });
 
-  module.exports = router;
+});
+
+router.put("/api/player/:id", (req, res) => {
+  db.Player.update(req.body, {
+    where: {
+      id: req.params.id,
+    },
+  }).then((updatedObject) => {
+    console.log(updatedObject);
+    res.end();
+  });
+});
+
+router.delete("/api/Player/:id", (req, res) => {
+  db.Player.destroy({
+    where: {
+      id: req.params.id,
+    },
+  }).then((numberOfDestroyedRows) => {
+    console.log(numberOfDestroyedRows);
+    if (numberOfDestroyedRows === 1) {
+      res.json({
+        success: true,
+        message: `Successfully deleted player: ${req.params.id}`,
+      });
+    } else {
+      res.status(500);
+      res.json({
+        success: false,
+        message: `A problem occurred deleting player: ${req.params.id}`,
+      });
+    }
+  })
+    .catch((err) => {
+      console.log(err);
+      res.status(500);
+      res.json({
+        success: false,
+      });
+    });
+});
+
+module.exports = router;
