@@ -58,7 +58,7 @@
                     </div>
 
                 </div>
-                <button class="btn waves-effect waves-light btn-small"  id="new-player">Submit
+                <button class="btn waves-effect waves-light btn-small" id="new-player">Submit
                     <i class="material-icons right">send</i>
                 </button>
             </form>
@@ -68,36 +68,50 @@
 
 <script type="text/javascript">
 
-$(document).on("click", function(){
-$(".user-logout").removeClass("hide");
+    $(document).on("click", function () {
+        $(".user-logout").removeClass("hide");
 
-$("#new-player-form").on("submit", function (event) {
-        event.preventDefault();
-        const name = $("#player-name").val();
-        const email = $("#email").val();
-        const phone = $("#phone-number").val();
-        const id = parseInt($("#usta-id").val());
-        const rating = parseInt($("#utr-rating").val());
-        const level =  $("#level").val();
-        const password = $("#password").val();
-        
-        $.ajax({
-            url: `/api/player`,
-            method: "POST",
-            data: {
-                fullName: name,
-                email:email,
-                phone: phone,
-                ustaId:id,
-                utrRating:rating,                
-                level: "beginner",
-                password: password
+        $("#new-player-form").on("submit", function (event) {
+            event.preventDefault();
+            const name = $("#player-name").val();
+            const email = $("#email").val();
+            const phone = $("#phone-number").val();
+            const id = parseInt($("#usta-id").val());
+            const rating = parseInt($("#utr-rating").val());
+
+            const levelInput = parseInt($("#level").val());
+
+            if (levelInput == 1) {
+                level = "beginner";
+
             }
-        }).then(function () {
-            window.location.replace(`/coach/1`);
+            else if (levelInput == 2) {
+                level = "intermediate";
+            }
+            else {
+                level = "advanced";
+            }
+
+
+            const password = $("#password").val();
+
+            $.ajax({
+                url: `/api/player`,
+                method: "POST",
+                data: {
+                    fullName: name,
+                    email: email,
+                    phone: phone,
+                    ustaId: id,
+                    utrRating: rating,
+                    level: level,
+                    password: password                    
+                }
+            }).then(function () {
+                window.location.replace(`/coach/1`);
+            });
         });
     });
-});
 
 
 </script>
