@@ -30,9 +30,6 @@ module.exports = function (sequelize, DataTypes) {
     certified: {
       type: DataTypes.STRING
     },
-    worKRole: {
-      type: DataTypes.STRING
-    },
     // The password cannot be null
     password: {
       type: DataTypes.STRING,
@@ -40,7 +37,8 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     }
 
-  });
+  },
+  { timestamps: false });
 
 
   Coach.associate = function (models) {
