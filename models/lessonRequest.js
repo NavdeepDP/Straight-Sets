@@ -19,12 +19,14 @@ module.exports = function(sequelize, DataTypes) {
       LessonRequest.belongsTo(models.Coach, {
         foreignKey: {
           allowNull: false
-        }
+        },
+        onDelete: "cascade"
       });
       LessonRequest.belongsTo(models.Player, {
         foreignKey: {
           allowNull: false
-        }
+        },
+        onDelete: "cascade"
       });
     };
   

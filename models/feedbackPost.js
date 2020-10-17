@@ -20,12 +20,14 @@ module.exports = function(sequelize, DataTypes) {
       FeedbackPost.belongsTo(models.Coach, {
         foreignKey: {
           allowNull: false
-        }
+        },
+        onDelete: "cascade"
       });
       FeedbackPost.belongsTo(models.Player, {
         foreignKey: {
           allowNull: false
-        }
+        },
+        onDelete: "cascade"
       });
     };
   

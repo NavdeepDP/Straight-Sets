@@ -17,10 +17,10 @@
           <tbody>
             {{#each players}}
             <tr>
-              <td>{{fullName}}</td>
+              <td><a href="/player/profile/{{id}}">{{fullName}}</a></td>
               <td>{{utrRating}}</td>
-              <td><a href="/posts/{{id}}">Go to Posts</a></td>
-              <td><a href="/post/{{id}}">Create Post</a></td>
+              <td><a href="/posts/{{id}}">All Feedbacks</a></td>
+              <td><a href="/post/{{id}}">New Feedback</a></td>
               <td><a style='cursor:pointer;color:red' class='delete-player' data-id={{id}}>Delete Player</a></td>
             </tr>
             {{/each}}

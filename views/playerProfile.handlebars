@@ -2,34 +2,32 @@
 <div class="container">
     <div class="row" style="padding-top:30px; padding-bottom:0px">
         <div class="col s6">
-
-
             <!-- Change The Form Method From Here-->
             <div class="card-panel z-depth-5">
                 <!-- Form Logo Section  -->
                 <div class="hide" data-id="{{ustaId}}" id="usta-id"></div>
-                <div class="row margin">
-                    <div class="col s12 m12 l12 left">
-                        <img src="/assets/images/logo.png" alt="" class="responsive-img circle" style="width:100px;">
-
+                <div class="row ">
+                    <div class="col s12">
+                        
+                        <h4 class="header">{{fullName}}</h4>
+                         <h3> <img src="/assets/images/utr.png" alt="" class="responsive-img circle"
+                                    style="width:20px;">{{utrRating}}</h3>
                     </div>
                 </div>
-
-                <h6 class="header">{{fullName}}</h6>
-
             </div>
         </div>
+
     </div>
     <div class="row">
         <div class="col s12">
             <!-- Change The Form Method From Here-->
-            <div class="card-panel z-depth-5">
-                <div class="table-responsive">
-                    <table class="table">
+            <div class="card-panel z-depth-5" style="padding-right:10px;padding-left:10px; padding-bottom:10px">
+                <div>
+                    <table>
                         <caption class="header">Recent Tornaments Results</caption>
                         <thead>
                             <tr>
-                                <th scope="col">Date</th>
+                                <th scope="col">Tournament</th>
                                 <th scope="col">Event</th>
                                 <th scope="col">Round</th>
                                 <th scope="col">Score</th>
@@ -88,19 +86,17 @@
                                     resultRow.css("background-color", "#e0f2f1");
 
                                 }
-                                else
-                                {
+                                else {
                                     resultRow.css("background-color", "#80cbc4");
 
                                 }
                                 playerResults.append(resultRow);
                             }
-                            
+
                             if (color === true) {
                                 color = false;
                             }
-                            else
-                            {
+                            else {
                                 color = false;
                             }
 
