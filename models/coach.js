@@ -22,7 +22,8 @@ module.exports = function (sequelize, DataTypes) {
       }
     },
     phone: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
     },
     bio: {
       type: DataTypes.TEXT
@@ -30,12 +31,12 @@ module.exports = function (sequelize, DataTypes) {
     certified: {
       type: DataTypes.STRING
     },
-    // The password cannot be null
-    password: {
-      type: DataTypes.STRING,
-      defaultValue: "password",
-      allowNull: false
-    }
+    // // The password cannot be null
+    // password: {
+    //   type: DataTypes.STRING,
+    //   defaultValue: "password",
+    //   allowNull: false
+    // }
 
   },
   { timestamps: false });

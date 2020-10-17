@@ -16,6 +16,11 @@ router.get("/player/new", function (req, res) {
   res.render("new-player");
 });
 
+router.get("/player/edit/:id", function (req, res) {
+  console.log("edit player");
+  res.render("new-player",{id: req.params.id});
+});
+
 
 router.get("/players", (req, res) => {
   // ALL the Things should be displayed
@@ -68,10 +73,6 @@ router.get("/players/:id", isAuthenticated, (req, res) => {
 // // =============================================================
 
 
-// router.post("/api/login", passport.authenticate("local"), function (req, res) {
-//   console.log(req.user);
-//   res.json(req.user);
-// });
 
 router.get("/api/players", (req, res) => {
 
@@ -130,7 +131,7 @@ router.post("/api/player", (req, res) => {
 
       var dbUser = {
         email: newPlayer.email,
-        password: newPlayer.password,
+        password: "password",
         role: "player",
         roleId: newPlayer.id
       };
@@ -174,6 +175,16 @@ router.put("/api/player/:id", (req, res) => {
 });
 
 router.delete("/api/Player/:id", (req, res) => {
+
+  db.User.destroy({
+    where: {
+      roleId: req.params.id,
+    },
+  }).then().catch((err)=>{
+
+  });
+
+
   db.Player.destroy({
     where: {
       id: req.params.id,

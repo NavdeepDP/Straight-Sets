@@ -7,10 +7,10 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Name</th>              
               <th>UTR #</th>
-              <th>See Player's Posts</th>
-              <th>New Post</th>
+              {{!-- <th>See Player's Posts</th> --}}
+              <th>Edit Player</th>
               <th>Delete Player</th>
             </tr>
           </thead>
@@ -19,9 +19,9 @@
             <tr>
               <td><a href="/player/profile/{{id}}">{{fullName}}</a></td>
               <td>{{utrRating}}</td>
-              <td><a href="/posts/{{id}}">All Feedbacks</a></td>
-              <td><a href="/post/{{id}}">New Feedback</a></td>
-              <td><a style='cursor:pointer;color:red' class='delete-player' data-id={{id}}>Delete Player</a></td>
+              <td><a class="btn-floating btn-small teal" href="/player/edit/{{id}}"><i class="material-icons edit-player" data-id={{id}}>edit</i></a></td>
+              <td><a class="btn-floating btn-small red "><i class="material-icons delete-player" data-id={{id}}>delete</i></a></td>
+              
             </tr>
             {{/each}}
 
@@ -29,7 +29,7 @@
         </table>
 
         <p class="center-align">
-          <a href="/player/new" class="btn tooltipped btn-floating btn-small waves-effect waves-light red"
+          <a href="/player/new" class="btn tooltipped btn-floating btn-small waves-effect waves-light teal"
             data-tooltip="Add new player"><i class=" material-icons">add</i></a>
         </p>
       </div>

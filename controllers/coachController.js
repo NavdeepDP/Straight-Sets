@@ -88,7 +88,7 @@ router.post("/api/coach", (req, res) => {
 
       var dbUser = {
         email: newCoach.email,
-        password: newCoach.password,
+        password: "password",
         role: "coach",
         roleId: newCoach.id
       };

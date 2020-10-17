@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col s12">
-            <h5 class="header">New Player form</h5>
+            <h5 class="header">New/Edit Player form</h5>
         </div>
     </div>
     <div class="row">
@@ -12,49 +12,53 @@
     </div>
     <div class="row">
         <div class="col s12">
-            <form id="new-player-form" class="col s12">
+            <form id="new-player-form" class="col s12" data-id={{id}}>
                 <div class="input-field">
-                    <input placeholder="" id="player-name" type="text" class="validate">
+                    <input placeholder="" id="player-name" type="text" required="" class="validate">
                     <label for="player-name">Player Name</label>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="phone-number" type="text" class="validate">
+                        <input placeholder="" id="phone-number" type="text" required="" class="validate">
                         <label for="phone-number">Phone Number</label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="email" type="email" class="validate">
+                        <input placeholder="" id="email" type="email" required="" class="validate">
                         <label for="email">Email</label>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="password" type="password" class="validate">
-                        <label for="password">Password</label>
+                        <input id="select-date"  placeholder="" type="text" required="" class="datepicker">
+                        <label for="select-date">Select date</label>
                     </div>
+
                 </div>
+
                 <div class="row">
                     <div class="input-field col s6">
-                        <input id="usta-id" type="number" class="validate">
+                        <input placeholder="" id="usta-id" type="number" class="validate">
                         <label for="usta-id">USTA Number</label>
                     </div>
                     <div class="input-field col s6">
-                        <input id="utr-rating" type="number" class="validate">
+                        <input placeholder="" id="utr-rating" type="number" class="validate">
                         <label for="utr-rating">UTR Rating</label>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s12">
-                        <select id="level">
-                            <option value="" disabled selected>Choose your option</option>
+                    <div class="col s12">
+                        <label for="level">Player Level</label>
+                        <select id="level" placeholder="" required="" class="browser-default">
+                            <option value="" disabled selected>Choose Player level</option>
                             <option value="1">Beginner</option>
                             <option value="2">Intermediate</option>
                             <option value="3">Advanced</option>
                         </select>
-                        <label>Player Level</label>
+
                     </div>
 
                 </div>
@@ -68,16 +72,81 @@
 
 <script type="text/javascript">
 
-    $(document).on("click", function () {
+    $(document).ready(function () {
+        $('.datepicker').datepicker();
         $(".user-logout").removeClass("hide");
 
+        var coachId;
+        var playerId = $("#new-player-form").attr('data-id');
+
+        getUserLoggedIn();
+        function getUserLoggedIn() {
+            $.get("/api/user_data").then(function (data) {
+                coachId = data.roleId;
+            });
+        }
+        //====================================================================================
+        var href = window.location.href;
+        if (href.includes("edit")) {
+            getPlayerToEdit()
+        }
+
+        function getPlayerToEdit() {
+
+            $.ajax({
+                url: `/api/players/${playerId}`,
+                method: "GET",
+
+            }).then(function (player) {
+                renderPlayer(player.data);
+            });
+        }
+
+        function renderPlayer(player) {
+            $("#player-name").val(player.fullName);
+            $("#email").val(player.email);
+            $("#phone-number").val(player.phone);
+            $("#usta-id").val(player.ustaId);
+            $("#utr-rating").val(player.utrRating);
+            $("#select-date").val(player.dateOfBirth);
+            var val;
+            if (player.level === "beginner") {
+                val = 1;
+            }
+            else if (player.level === "intermediate") {
+                val = 2;
+            }
+            else {
+                val = 3;
+            }
+            $("#level").val(val);
+
+
+        }
+
+        //=========================================================================================
         $("#new-player-form").on("submit", function (event) {
             event.preventDefault();
             const name = $("#player-name").val();
             const email = $("#email").val();
             const phone = $("#phone-number").val();
-            const id = parseInt($("#usta-id").val());
-            const rating = parseInt($("#utr-rating").val());
+
+            var dob = $("#select-date").val();
+
+            
+            
+
+            var id;
+            if (!$("#usta-id").val())
+                id = "null";
+            else
+                id = $("#usta-id").val();
+
+            var rating;
+            if (!($("#utr-rating").val()))
+                rating = 0;
+            else
+                rating = parseInt($("#utr-rating").val());
 
             const levelInput = parseInt($("#level").val());
 
@@ -93,23 +162,47 @@
             }
 
 
-            const password = $("#password").val();
+            if (href.includes("edit")) {
 
-            $.ajax({
-                url: `/api/player`,
-                method: "POST",
-                data: {
-                    fullName: name,
-                    email: email,
-                    phone: phone,
-                    ustaId: id,
-                    utrRating: rating,
-                    level: level,
-                    password: password                    
-                }
-            }).then(function () {
-                window.location.replace(`/coach/1`);
-            });
+                $.ajax({
+                    url: `/api/player/${playerId}`,
+                    method: "PUT",
+                    data: {
+                        fullName: name,
+                        email: email,
+                        phone: phone,
+                        ustaId: id,
+                        utrRating: rating,
+                        level: level,
+                        dateOfBirth:dob
+
+                    }
+                }).then(function () {
+                    window.location.replace(`/coach/${coachId}`);
+                });
+
+            }
+            else {
+
+                $.ajax({
+                    url: `/api/player`,
+                    method: "POST",
+                    data: {
+                        fullName: name,
+                        email: email,
+                        phone: phone,
+                        ustaId: id,
+                        utrRating: rating,
+                        level: level,
+                         dateOfBirth:dob
+
+                    }
+                }).then(function () {
+                    window.location.replace(`/coach/${coachId}`);
+                });
+
+            }
+
         });
     });
 

@@ -39,12 +39,16 @@ module.exports = function (sequelize, DataTypes) {
             values: ["beginner", "intermediate", "advanced"]
 
         },
-        // The password cannot be null
-        password: {
-            type: DataTypes.STRING,
-            defaultValue: "password",
+        dateOfBirth:{
+            type:DataTypes.DATEONLY,
             allowNull: false
         }
+        // The password cannot be null
+        // password: {
+        //     type: DataTypes.STRING,
+        //     defaultValue: "password",
+        //     allowNull: false
+        // }
 
     });
 

@@ -1,0 +1,71 @@
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <h5 class="header">New/Edit Player form</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-success" role="alert" id="user-creation-alert" style="display:none">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <form id="new-player-form" class="col s12" data-id={{id}}>
+                <div class="input-field">
+                    <input placeholder="" id="player-name" type="text" required="" class="validate">
+                    <label for="player-name">Player Name</label>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input placeholder="" id="phone-number" type="text" required="" class="validate">
+                        <label for="phone-number">Phone Number</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input placeholder="" id="email" type="email" required="" class="validate">
+                        <label for="email">Email</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="select-date"  placeholder="" type="text" required="" class="datepicker">
+                        <label for="select-date">Select date</label>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input placeholder="" id="usta-id" type="number" class="validate">
+                        <label for="usta-id">USTA Number</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input placeholder="" id="utr-rating" type="number" class="validate">
+                        <label for="utr-rating">UTR Rating</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <label for="level">Player Level</label>
+                        <select id="level" placeholder="" required="" class="browser-default">
+                            <option value="" disabled selected>Choose Player level</option>
+                            <option value="1">Beginner</option>
+                            <option value="2">Intermediate</option>
+                            <option value="3">Advanced</option>
+                        </select>
+
+                    </div>
+
+                </div>
+                <button class="btn waves-effect waves-light btn-small" id="new-player">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

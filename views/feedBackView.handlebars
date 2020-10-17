@@ -1,15 +1,17 @@
 <div class="container">
     <div class="row">
         <div class="col s12">
-            <h5 class="header">Player Feedback</h5>
-
+            <h5 class="header">Player Feedback </h5>
+            <h5 id="player-name"></h5>
             <ul class="collapsible">
             {{#each posts}}
+                
                 <li>
                     <div class="collapsible-header  teal lighten-2"><i class="material-icons">place</i>{{title}}</div>
                     <div class="collapsible-body"><span>{{body}}</span></div>
                     <div class="collapsible-body">
                         <ul>
+                            <li>Player: {{Player.fullName}}</li>
                             <li>Tips from Coach: {{Coach.fullName}}</li>
                             <li>Dated: {{createdAt }}</li>
                         </ul>
@@ -20,7 +22,15 @@
 
     </div>
 </div>
+<script>
+    $(document).ready(function(){
 
+    
+
+
+
+    });
+</script>
 
 
 
