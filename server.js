@@ -29,6 +29,7 @@ const playersController = require("./controllers/playerController");
 const feedbackPostController = require("./controllers/feedbackPostController");
 const lessonRequestController = require("./controllers/lessonRequestController");
 const userController = require("./controllers/userController");
+const tennisController = require("./controllers/tennisController");
 
 // Sets up the Express App
 // =============================================================
@@ -69,6 +70,7 @@ app.use(playersController);
 app.use(feedbackPostController);
 app.use(lessonRequestController);
 app.use(userController);
+app.use(tennisController);
 
 //API routes
 app.get("/api/config", (req, res) => {
@@ -81,8 +83,8 @@ app.get("/", function (req, res) {
     res.render("index");
 });
 
-//db.sequelize.sync().then(function(){
-db.sequelize.sync({force:true}).then(function(){
+db.sequelize.sync().then(function(){
+//db.sequelize.sync({force:true}).then(function(){
     app.listen(PORT, function () {
         console.log(`Server is running on http://localhost:${PORT}`);
     });

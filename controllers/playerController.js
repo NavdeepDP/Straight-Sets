@@ -27,6 +27,24 @@ router.get("/players", (req, res) => {
 });
 
 
+
+router.get("/player/profile/:id",  (req, res) => {
+
+  db.Player.findOne({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then((player) => {
+      console.log(player)
+      res.render("playerProfile", player.dataValues);
+    })
+    .catch((err) => {
+
+    });
+
+});
+
 router.get("/players/:id", isAuthenticated, (req, res) => {
 
   db.Player.findOne({

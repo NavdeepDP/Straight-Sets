@@ -26,7 +26,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING
         },
         ustaId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: true,
         },
         utrRating: {
