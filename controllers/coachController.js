@@ -9,6 +9,12 @@ var isAuthenticated = require("../config/middleware/isAuthenticated");
 // =============================================================
 
 
+//==============================================
+router.get("/coach/new", (req, res) => {
+  console.log("register new coach");
+  res.render("coachRegister");
+});
+//===================================
 router.get("/coach/:id",isAuthenticated, (req, res) => {
 
   db.Player.findAll().then((dbPlayers) => {
@@ -26,6 +32,7 @@ router.get("/coach/:id",isAuthenticated, (req, res) => {
 router.get("/coach/requests/:id", (req, res) => {
   res.render("coachRequests", { id: req.params.id });
 });
+
 
 
 // api ROUTES

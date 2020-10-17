@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col s12">
-            <h5 class="header">New/Edit Player form</h5>
+            <h5 class="header">Coach Registration form</h5>
         </div>
     </div>
     <div class="row">
@@ -12,10 +12,10 @@
     </div>
     <div class="row">
         <div class="col s12">
-            <form id="new-player-form" class="col s12" data-id={{id}}>
+            <form id="new-coach-form" class="col s12" data-id={{id}}>
                 <div class="input-field">
-                    <input placeholder="" id="player-name" type="text" required="" class="validate">
-                    <label for="player-name">Player Name</label>
+                    <input placeholder="" id="coach-name" type="text" required="" class="validate">
+                    <label for="player-name">Coach Name</label>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
@@ -31,41 +31,37 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="select-date"  placeholder="" type="text" required="" class="datepicker">
-                        <label for="select-date">Select date</label>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input placeholder="" id="usta-id" type="number" class="validate">
-                        <label for="usta-id">USTA Number</label>
-                    </div>
-                    <div class="input-field col s6">
-                        <input placeholder="" id="utr-rating" type="number" class="validate">
-                        <label for="utr-rating">UTR Rating</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s12">
-                        <label for="level">Player Level</label>
-                        <select id="level" placeholder="" required="" class="browser-default">
-                            <option value="" disabled selected>Choose Player level</option>
-                            <option value="1">Beginner</option>
-                            <option value="2">Intermediate</option>
-                            <option value="3">Advanced</option>
-                        </select>
-
-                    </div>
-
-                </div>
-                <button class="btn waves-effect waves-light btn-small" id="new-player">Submit
+                <button class="btn waves-effect waves-light btn-small" id="new-coach">Submit
                     <i class="material-icons right">send</i>
                 </button>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    $("#new-coach-form").on("submit", function (event) {
+        event.preventDefault();
+        const name = $("#coach-name").val();
+        const email = $("#email").val();
+        const phone = $("#phone-number").val();
+        $.ajax({
+            url: `/api/coach`,
+            method: "POST",
+            data: {
+                fullName: name,
+                email: email,
+                phone: phone
+
+            }
+        }).then(function (coach) {
+            
+            window.location.replace("/");
+        });
+
+    });
+
+
+
+
+</script>
