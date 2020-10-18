@@ -34,8 +34,8 @@
     </div>
     <div class="row">
         <div class="col s12">
-            <!-- Change The Form Method From Here-->
-            <div class="card-panel z-depth-5" style="padding-right:10px;padding-left:10px; padding-bottom:10px">
+            <!-- Change The Form Method From Here-->           
+               <div>
                 <div>
                     <table>
                         <caption class="header">Recent Tornaments Results</caption>
@@ -44,6 +44,7 @@
                                 <th scope="col">Tournament</th>
                                 <th scope="col">Event</th>
                                 <th scope="col">Round</th>
+                                <th scope="col">Result</th>
                                 <th scope="col">Score</th>
                             </tr>
                         </thead>
@@ -70,9 +71,8 @@
         getUserLoggedIn();
         function getUserLoggedIn() {
             $.get("/api/user_data").then(function (data) {
-                if(data.role ==="player")
-                {
-                      $("#player-feedback").addClass("hide");
+                if (data.role === "player") {
+                    $("#player-feedback").addClass("hide");
                 }
             });
         }
@@ -89,9 +89,11 @@
 
                 for (var i = 0; i < results.length; i++) {
                     let roundCol = $("<td>");
+                    let resultCol = $("<td>");
                     let scoreCol = $("<td>");
                     let eventCol = $("<td>");
                     let resultRow = $("<tr>");
+
                     if (Array.isArray(results[i].event)) {
 
                         if (Array.isArray(results[i].event[0].match)) {
@@ -101,10 +103,12 @@
                                 roundCol = $("<td>");
                                 scoreCol = $("<td>");
                                 eventCol = $("<td>");
+                                resultCol = $("<td>");
                                 resultRow.append($("<td>").text(results[i].tournamentname));
                                 resultRow.append(eventCol.text(results[i].event[0].eventname));
 
                                 resultRow.append(roundCol.text(results[i].event[0].match[m].round));
+                                resultRow.append(resultCol.text(results[i].event[0].match[m].result));
                                 resultRow.append(scoreCol.text(results[i].event[0].match[m].score));
                                 if (color === true) {
                                     resultRow.css("background-color", "#e0f2f1");
@@ -117,41 +121,69 @@
                                 playerResults.append(resultRow);
                             }
 
-                            if (color === true) {
-                                color = false;
-                            }
-                            else {
-                                color = false;
-                            }
+
 
                         }
                         else {
                             resultRow.append($("<td>").text(results[i].tournamentname));
                             resultRow.append(eventCol.text(results[i].event[0].eventname));
                             resultRow.append(roundCol.text(results[i].event[0].match.round));
+                            resultRow.append(resultCol.text(results[i].event[0].match.result));
                             resultRow.append(scoreCol.text(results[i].event[0].match.score));
                             playerResults.append(resultRow);
                         }
 
                     }
                     else {
-                        resultRow.append($("<td>").text(results[i].tournamentname));
-                        resultRow.append(eventCol.text(results[i].event.eventname));
+
                         if (Array.isArray(results[i].event.match)) {
-                            resultRow.append(roundCol.text(results[i].event.match[0].round));
-                            resultRow.append(scoreCol.text(results[i].event.match[0].score));
+                            for (let m = 0; m < results[i].event.match.length; m++) {
+                                resultRow = $("<tr>");
+                                roundCol = $("<td>");
+                                scoreCol = $("<td>");
+                                resultCol = $("<td>");
+                                eventCol = $("<td>");
+                                resultRow.append($("<td>").text(results[i].tournamentname));
+                                resultRow.append(eventCol.text(results[i].event.eventname));
+
+                                resultRow.append(roundCol.text(results[i].event.match[m].round));
+                                resultRow.append(resultCol.text(results[i].event.match[m].result));
+                                resultRow.append(scoreCol.text(results[i].event.match[m].score));
+                                if (color === true) {
+                                    resultRow.css("background-color", "#e0f2f1");
+
+                                }
+                                else {
+                                    resultRow.css("background-color", "#80cbc4");
+
+                                }
+                                playerResults.append(resultRow);
+                            }
+
+
 
                         }
                         else {
+                            resultRow = $("<tr>");
+                            resultRow.append($("<td>").text(results[i].tournamentname));
+                            resultRow.append(eventCol.text(results[i].event.eventname));
                             resultRow.append(roundCol.text(results[i].event.match.round));
+                            resultRow.append(resultCol.text(results[i].event.match.result));
                             resultRow.append(scoreCol.text(results[i].event.match.score));
+                            playerResults.append(resultRow);
                         }
-                        playerResults.append(resultRow);
+
                     }
 
                     count++;
                     if (count == 5) {
                         break;
+                    }
+                    if (color === true) {
+                        color = false;
+                    }
+                    else {
+                        color = true;
                     }
 
                 }
