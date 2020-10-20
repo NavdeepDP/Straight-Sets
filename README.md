@@ -12,6 +12,8 @@ The link to deployed website [Website Link](https://straight-sets.herokuapp.com/
 
 ## Website Functionality/flow
 
+## Default password for coach and player login is "password".
+
 ### User Story
 #### I as tennis coach want to... 
 - Add players to my profile
@@ -30,6 +32,16 @@ The link to deployed website [Website Link](https://straight-sets.herokuapp.com/
 
 ### Player Flow
 ![Readme Image](./public/assets/images/player-flow.png)
+
+
+
+### Website Functionality 
+
+![WorkFlow-1](./public/assets/images/straightSets-1.gif)
+
+
+![WorkFlow-2](./public/assets/images/straightSets-gif-2.gif)
+
 
 
 ### Database Design
